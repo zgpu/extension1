@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Google Login</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+	<div id="welcome-message"></div>
+    <script>
+        // Your Firebase configuration
+
+	     const token = getUrlParameter('token');
+	     alert(token);
+
+	    
+       const firebaseConfig = {
+		  apiKey: "AIzaSyCr_AoZc16XaZhx29nLMWFpNDCpw7slbsI",
+		  authDomain: "test-fb-6c12b.firebaseapp.com",
+		  projectId: "test-fb-6c12b",
+		  storageBucket: "test-fb-6c12b.appspot.com",
+		  messagingSenderId: "925911738571",
+		  appId: "1:925911738571:web:95bc056c8ed3e4003d534e"
+		};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firebase Authentication and get a reference to the service
+        const auth = firebase.auth();
+
+       const db = firebase.firestore();
+
+        // Function to get URL parameter
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Check token parameter
+      
+        if (token == '2') {
+            // Token is 2, proceed with action
+            console.log('Token is 2, proceeding...');
+        } else {
+            // Token is not 2, initiate Google login
+           const provider = new firebase.auth.GoogleAuthProvider();
+
+
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    document.getElementById('welcome-message').innerText = `Welcome, ${user.email}!`;
+		    const returnString = `Welcome, ${user.email}!`;
+                    window.opener.postMessage(returnString, "*");
+                    window.close();
+                    loadData();
+                })
+                .catch((error) => {
+                    if (error.code === 'auth/user-disabled') {
+                        document.getElementById('welcome-message').innerText = 'Account blocked';
+                    } else {
+                        console.error("Error during sign-in:", error);
+                    }
+                });
+        
+              
+        }
+    </script>
+</body>
+</html>

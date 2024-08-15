@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Login Extension",
+  "version": "1.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png"
+     
+    }
+  },
+  "host_permissions": [
+    "https://test-fb-6c12b-default-rtdb.firebaseio.com/"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src https://test-fb-6c12b-default-rtdb.firebaseio.com/"
+  },
+  "permissions": [
+   "storage",
+    "activeTab"
+    
+  ]
+}
